@@ -21,6 +21,7 @@
 12. [Where to Fix Known Issues](#where-to-fix-known-issues)
 13. [API Keys & Environment Variables](#api-keys--environment-variables)
 14. [Roadmap / Future Work](#roadmap--future-work)
+15. For Support - RayyanMoosani.com
 
 ---
 
