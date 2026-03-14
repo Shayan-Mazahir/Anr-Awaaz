@@ -1,4 +1,4 @@
-# 🗣 Anṅ Awaaz — Oral-First English Pronunciation Coach
+# 🗣 Anṅ Awaaz — Oral-First Multi-lingual Pronunciation Coach
 
 > Built at the WatAI × Reception House Waterloo Hackathon, March 14 2026.  
 > An AI-powered, voice-first English learning tool for refugees and newcomers with limited literacy.
