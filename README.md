@@ -184,8 +184,6 @@ python main.py --server
 
 ## Hosting & Deployment
 
-### Option A — Local network (demo / hackathon)
-
 Run on your laptop and share the local IP with others on the same WiFi:
 
 ```bash
