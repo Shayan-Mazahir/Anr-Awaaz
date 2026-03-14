@@ -172,6 +172,17 @@ def advance_conversation(state: dict, user_said: str) -> dict:
     is_last_turn = turn >= scenario["max_turns"]
     should_end = turn >= scenario["min_turns"]
 
+    # Detect if the transcription looks like garbled noise rather than real speech.
+    # Heuristic: very short, or contains no recognisable English words at all.
+    words_spoken = user_said.strip().split()
+    speech_seems_unclear = len(words_spoken) <= 1 or (
+        len(words_spoken) <= 3 and not any(w in [
+            "i", "a", "the", "to", "is", "my", "me", "hi", "hello", "yes", "no",
+            "help", "need", "want", "have", "can", "please", "thank", "okay", "ok",
+            "where", "what", "how", "who", "when", "why", "do", "are", "you",
+        ] for w in words_spoken)
+    )
+
     prompt = f"""You are running a language learning conversation simulation.
 
 CHARACTER: {scenario['character']}
@@ -188,12 +199,14 @@ Conversation so far:
 {history_str}
 [User]: {user_said}
 
+{"⚠️ IMPORTANT: The user's speech above looks garbled or was unclear (possibly a microphone issue or they are still learning). Do NOT penalise them harshly. Have the character politely ask them to repeat or offer helpful prompts. Set communication_score to 40 and pronunciation_score to 40 minimum — we cannot fairly score unclear audio." if speech_seems_unclear else ""}
+
 Respond with a JSON object (no markdown, no preamble):
 {{
-  "character_reply": "what {scenario['character_short']} says next, in character, 1-2 sentences max, simple vocabulary",
+  "character_reply": "what {scenario['character_short']} says next, in character, 1-2 sentences max, simple vocabulary. If speech was unclear, kindly ask them to repeat or offer a simple yes/no question to help.",
   "communication_success": true/false,
-  "communication_note": "one sentence: did the user successfully communicate their point? be specific",
-  "pronunciation_feedback": "one warm sentence in {language} about their pronunciation — pick the most important thing to fix from these sounds they struggle with: {', '.join(phoneme_issues) if phoneme_issues else 'no major issues detected'}. If pronunciation was fine, say something encouraging in {language}.",
+  "communication_note": "one sentence: did the user successfully communicate their point? be specific. If audio was unclear, say so gently.",
+  "pronunciation_feedback": "one warm sentence in {language} about their pronunciation — pick the most important thing to fix from these sounds they struggle with: {', '.join(phoneme_issues) if phoneme_issues else 'no major issues detected'}. If speech was unclear or too short to judge, give general encouragement only in {language}.",
   "communication_score": 0-100,
   "pronunciation_score": 0-100,
   "conversation_complete": true/false,
@@ -203,8 +216,8 @@ Respond with a JSON object (no markdown, no preamble):
 Rules:
 - character_reply must sound natural, like a real person in that role
 - Keep character speech simple — this is a language learner
-- communication_score: 100 = perfectly clear, 0 = completely unclear
-- pronunciation_score: 100 = native-like, 0 = incomprehensible  
+- communication_score: 100 = perfectly clear, 0 = completely unclear. NEVER go below 40 if speech was simply hard to hear.
+- pronunciation_score: 100 = native-like, 0 = incomprehensible. NEVER go below 40 for unclear/short audio.
 - pronunciation_feedback MUST be in {language} script
 - conversation_complete = true only if the user's goal is achieved or max turns reached"""
 
