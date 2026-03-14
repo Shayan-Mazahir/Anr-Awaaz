@@ -1,4 +1,4 @@
-# 🗣 Lisaan — Oral-First English Pronunciation Coach
+# 🗣 Anṅ Awaaz — Oral-First English Pronunciation Coach
 
 > Built at the WatAI × Reception House Waterloo Hackathon, March 14 2026.  
 > An AI-powered, voice-first English learning tool for refugees and newcomers with limited literacy.
@@ -26,7 +26,7 @@
 
 ## What It Does
 
-Lisaan teaches spoken English to people who may not read or write. It has two practice modes:
+Anṅ Awaaz teaches spoken English to people who may not read or write. It has two practice modes:
 
 **Phrase Drilling** — Claude generates 5 phrases tailored to the learner's native language phoneme gaps (sounds that don't exist in their language are prioritised). The user listens, then repeats. Whisper transcribes the audio, a phoneme-level scorer grades it, and Claude gives feedback in the learner's own language.
 
@@ -108,8 +108,8 @@ nltk.download('cmudict')
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-team/lisaan.git
-cd lisaan
+git clone https://github.com/your-team/anṅ-awaaz.git
+cd anṅ-awaaz
 ```
 
 ### 2. Create a virtual environment
@@ -265,7 +265,7 @@ web: uvicorn app:app --host 0.0.0.0 --port $PORT
 ## Project Structure
 
 ```
-lisaan/
+anṅ-awaaz/
 ├── app.py              # FastAPI server — all HTTP endpoints
 ├── main.py             # CLI entry point + FastAPI server (legacy)
 ├── analyzer.py         # Whisper STT with accent-aware prompting
