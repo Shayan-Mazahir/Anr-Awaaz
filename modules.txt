@@ -1,0 +1,8 @@
+If on Linux: sudo dnf install portaudio-devel -y
+
+curl -L -o phoible.csv "https://raw.githubusercontent.com/phoible/dev/master/data/phoible.csv"
+python -m venv venv
+source venv/bin/activate
+pip install nltk openai-whisper gtts pyaudio numpy scipy anthropic
+python -c "import nltk; nltk.download('cmudict')"
+python main.py
